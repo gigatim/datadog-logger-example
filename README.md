@@ -1,18 +1,32 @@
 # DatadogLoggerExample
 
-To start your Phoenix server:
+This is an example project for using the
+[Gigalixir Datadog Logger Buildpack](https://github.com/gigalixir/gigalixir-buildpack-datadog-logger).
 
-  * Run `mix setup` to install and setup dependencies
-  * Start Phoenix endpoint with `mix phx.server` or inside IEx with `iex -S mix phx.server`
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+## Usage
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+### Create a custom logger
 
-## Learn more
+We are using a pretty basic [structured logger](/lib/structured_logger.ex).
+You can customize this to your hearts content.
 
-  * Official website: https://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
-  * Docs: https://hexdocs.pm/phoenix
-  * Forum: https://elixirforum.com/c/phoenix-forum
-  * Source: https://github.com/phoenixframework/phoenix
+Change the `:logger` configuration in `config/config.exs` to use your custom logger.
+```
+config :logger, :console,
+  format: { StructuredLogger, :format },
+  metadata: [:request_id]
+```
+
+### Set the config variables for the logger
+
+See the documentation on the buildpack.
+At the time of writing you will need to set `GIG_DD_LOGGER__API_KEY` and `GIG_DD_LOGGER__URL`.
+
+
+### Add the buildpack
+
+Create a [.buildpacks](/.buildpacks) file with the custom logger.
+
+At the time of writing, you will have to utilize Mix Mode (the mix buildpack),
+as the releases buildpack does not support the datadog-logger buildpack.
